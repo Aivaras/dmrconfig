@@ -2668,10 +2668,11 @@ static int anytone_ht_verify_config(radio_device_t *radio)
         nzones++;
 
         for (k=0; k<250; k++) {
-            int cnum = zlist[k] + 1;
+            int cindex = zlist[k];
 
-            if (cnum != 0xffff) {
-                channel_t *ch = get_channel(cnum - 1);
+            if (cindex != 0xffff) {
+                int cnum = cindex + 1;
+                channel_t *ch = get_channel(cindex);
 
                 if (!ch) {
                     fprintf(stderr, "Zone %da '", i+1);
