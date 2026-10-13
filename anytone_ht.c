@@ -1,5 +1,5 @@
 /*
- * Interface to Anytone D868UV/D878UV/D878UV2.
+ * Interface to Anytone D868UV/D878UV/D878UV2/D578UV.
  *
  * Copyright (C) 2018 Serge Vakulenko, KK6ABQ
  *
@@ -696,6 +696,14 @@ static int anytone_ht_is_compatible(radio_device_t *radio)
     if (memcmp("D878UV", (char*)&radio_mem[0], 6) == 0)
         return 1;
     if (memcmp("D6X2UV", (char*)&radio_mem[0], 6) == 0)
+        return 1;
+    if (memcmp("D578UV2", (char*)&radio_mem[0], 7) == 0)
+        return 1;
+    if (memcmp("578UV2A", (char*)&radio_mem[0], 7) == 0)
+        return 1;
+    if (memcmp("D578UVE", (char*)&radio_mem[0], 7) == 0)
+        return 1;
+    if (memcmp("D578UV", (char*)&radio_mem[0], 6) == 0)
         return 1;
     return 0;
 }
@@ -3080,6 +3088,46 @@ radio_device_t radio_d878uv2 = {
 //
 radio_device_t radio_dmr6x2 = {
     "BTECH DMR-6x2",
+    anytone_ht_download,
+    anytone_ht_upload,
+    anytone_ht_is_compatible,
+    anytone_ht_read_image,
+    anytone_ht_save_image,
+    anytone_ht_print_version,
+    anytone_ht_print_config,
+    anytone_ht_verify_config,
+    anytone_ht_parse_parameter,
+    anytone_ht_parse_header,
+    anytone_ht_parse_row,
+    anytone_ht_update_timestamp,
+    anytone_ht_write_csv,
+};
+
+//
+// Anytone AT-D578UV
+//
+radio_device_t radio_d578uv = {
+    "Anytone AT-D578UV",
+    anytone_ht_download,
+    anytone_ht_upload,
+    anytone_ht_is_compatible,
+    anytone_ht_read_image,
+    anytone_ht_save_image,
+    anytone_ht_print_version,
+    anytone_ht_print_config,
+    anytone_ht_verify_config,
+    anytone_ht_parse_parameter,
+    anytone_ht_parse_header,
+    anytone_ht_parse_row,
+    anytone_ht_update_timestamp,
+    anytone_ht_write_csv,
+};
+
+//
+// Anytone AT-D578UV2
+//
+radio_device_t radio_d578uv2 = {
+    "Anytone AT-D578UV2",
     anytone_ht_download,
     anytone_ht_upload,
     anytone_ht_is_compatible,
