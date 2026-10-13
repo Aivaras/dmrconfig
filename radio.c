@@ -107,7 +107,8 @@ void radio_connect()
     }
     if (! ident) {
         // Try Anytone family.
-        if (serial_init(0x28e9, 0x018a) >= 0)
+        if (serial_init(0x28e9, 0x018a) >= 0 ||
+            serial_init(0x2e3c, 0x5740) >= 0)
             ident = serial_identify();
     }
     if (! ident) {
