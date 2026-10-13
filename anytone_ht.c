@@ -870,26 +870,35 @@ static int bcd_to_hz(unsigned bcd)
 //
 static void print_tx_offset(FILE *out, unsigned tx_offset_bcd, unsigned mode)
 {
+    char buf[32];
     int offset;
+    const char *sign;
 
     switch (mode) {
     default:
     case RM_SIMPLEX:            // TX frequency = RX frequency
-        fprintf(out, "+0       ");
+        snprintf(buf, sizeof(buf), "+0");
         break;
 
     case RM_TXPOS:              // Positive TX offset
-        offset = bcd_to_hz(tx_offset_bcd);
-        fprintf(out, "+");
-        print_mhz(out, offset);
-        break;
-
     case RM_TXNEG:              // Negative TX offset
         offset = bcd_to_hz(tx_offset_bcd);
-        fprintf(out, "-");
-        print_mhz(out, offset);
+        sign = (mode == RM_TXPOS) ? "+" : "-";
+        if (offset % 1000000 == 0)
+            snprintf(buf, sizeof(buf), "%s%u", sign, offset / 1000000);
+        else if (offset % 100000 == 0)
+            snprintf(buf, sizeof(buf), "%s%.1f", sign, offset / 1000000.0);
+        else if (offset % 10000 == 0)
+            snprintf(buf, sizeof(buf), "%s%.2f", sign, offset / 1000000.0);
+        else if (offset % 1000 == 0)
+            snprintf(buf, sizeof(buf), "%s%.3f", sign, offset / 1000000.0);
+        else if (offset % 100 == 0)
+            snprintf(buf, sizeof(buf), "%s%.4f", sign, offset / 1000000.0);
+        else
+            snprintf(buf, sizeof(buf), "%s%.5f", sign, offset / 1000000.0);
         break;
     }
+    fprintf(out, "%-8s ", buf);
 }
 
 //
